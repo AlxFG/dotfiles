@@ -1,0 +1,136 @@
+# Config file for yambar
+# Note that this may be version-dependent, this file is written for v1.8.0
+
+
+# Font anchors
+font-main: &fontmain "JetBrainsMono Nerd Font:style=Medium:pixelsize=15"
+font-aws: &awesome Font Awesome 5 Free:style=solid:pixelsize=14
+
+# Color anchors
+fg-none: &fgnone 282C34FF
+fg-1: &fg1 A69EDDFF
+fg-blue: &fgblue 99d1dbff
+fg-sapphire: &fgsapp 74c7ecdd
+fg-green: &fggreen a6e3a1dd
+fg-peach: &fgpeach fab387dd
+fg-mauve: &fgmauve cba6f7dd
+fg-teal: &fgteal 94e2d5dd
+fg-lavendar: &fglav b4befedd
+fg-focus: &fgfocus e78284ff
+bg-1: &bg1 353D4Cff
+bg-tag: &bgtag 585b70ff
+bg-tag2: &bgtag2 45475aff
+bg-urgent: &bgurgent e78284ff
+
+# Background blocks
+background-block: &bgcblock {background: {color: *bg1 }}
+background-block-urgent: &bgcurg {background: {color: *bgurgent }}
+
+# Underlines
+underline-focused: &line {underline: { size: 1, color: *fgfocus}}
+underline-urgent: &lineurgent {underline: { size: 1, color: *fgblue}}
+underline-utils: &lineutil {underline: { size: 1, color: *fgpeach}}
+underline-clock: &lineclock {underline: { size: 0, color: *fgteal}}
+underline-title: &linetitle {underline: { size: 0, color: *bgtag}}
+
+# Combined decorations
+combination-utils: &combutil {stack: [ <<: *bgcblock, <<: *lineutil]}
+combination-clock: &combclock {stack: [ <<: *bgcblock, <<: *lineclock]}
+
+
+### Main
+
+bar:
+  location: top
+  height: 23
+  layer: bottom
+  spacing: 0
+  margin: 0
+  border: {margin: 0, top-margin: 0, right-margin: 10}
+  foreground: *fg1
+  background: *fgnone
+  font: *fontmain
+
+  ### Left, river tags
+  left:
+    - river:
+        anchors:
+          - id: &name { text: "{id}" }
+          - string: &focus { stack: [ {background: {color: *bg1}} ] }
+          - string: &normal { string: { <<: *name, margin: 10 } }
+          - string:
+              &occupied { string: { <<: *name, deco: {background: {color: *bgtag2}}, margin: 10 } }
+          - string: &urgent { string: { <<: *name, deco: {stack: [background: {color: *bgurgent}, <<: *lineurgent]}, margin: 10 } }
+          - string: &focused { string: { <<: *name, deco: {stack: [background: {color: *bgtag}, <<: *line]}, margin: 10 } }
+          - string: &unfocused { string: { <<: *name, deco: {background: {color: *bgtag2}}, margin: 10 } }
+          - base: &river_base
+              tag: state
+              default: *normal
+              values:
+                focused: *focused
+                unfocused: *unfocused
+                urgent: *urgent
+                invisible:
+                  map:
+                    tag: occupied
+                    values:
+                      true: *occupied
+                      false: *normal
+        content:
+          map:
+            on-click:
+              left: sh -c "riverctl set-focused-tags $((1 << ({id} - 1)))"
+              right: sh -c "riverctl toggle-focused-tags $((1 << ({id} -1)))"
+              middle: sh -c "riverctl toggle-view-tags $((1 << ({id} -1)))"
+            tag: id
+            values:
+              1: { map: { <<: *river_base } }
+              2: { map: { <<: *river_base } }
+              3: { map: { <<: *river_base } }
+              4: { map: { <<: *river_base } }
+              5: { map: { <<: *river_base } }
+              6: { map: { <<: *river_base } }
+              7: { map: { <<: *river_base } }
+              8: { map: { <<: *river_base } }
+              9: { map: { <<: *river_base } }
+        title:
+          map:
+            tag: title
+            foreground: A69EDDFF
+            default:
+              {
+                string:
+                  {
+                    text: "{title}",
+                    left-margin: 12,
+                    right-margin: 12,
+                    max: 500,
+                    deco: *linetitle
+                  },
+              }
+            values: { "": { string: { text: "" } } }
+
+  ### Center, clock & weather gadget
+  #center:
+
+  ### Right, system tray
+  right:
+    - clock:
+        time-format: "%a %d %H:%M"
+        foreground: F76A69FF
+        content:
+          string:
+            text: " {time} "
+            deco: *combclock
+    #- alsa:
+    #    card: default
+    #    mixer: Master
+    #    content:
+    #      map:
+    #        on-click: /bin/bash -c "pavucontrol"
+    #        tag: muted
+    #        values:
+    #          true:
+    #            string: {text: "   ", deco: *bgcurg}
+    #          false:
+    #            string: {text: "{volume}/65536", deco: *bgcblock}

@@ -1,0 +1,139 @@
+##---BSPWM Bindings
+# Quit bspwm
+super + shift + Escape
+  bspc quit
+
+# Restart bspwm
+super + shift + w
+  bspc wm -r
+
+# Kill Window
+super + shift + q
+  bspc node --close
+
+# Focus on window in direction
+super + {h,j,k,l}
+	bspc node -f {west,south,north,east}
+
+# Send window to desktop
+super + shift + {1-9}
+  bspc node -d ^{1-9}
+
+# Send window to desktop and swap to desktop
+super + control + {0-9}
+  bspc node -d ^{1-9} -f
+
+# Swap nodes the tree from the current nodes parent
+super + control + {Up, Down}
+  bspc node @parent -C {forward, backward}
+
+# Rotate the tree from the current nodes parent
+super + control + {Right, Left}
+	bspc node @parent --rotate {90,270}
+
+# Flip the tree from the current nodes parent
+super + control + {h,j,k,l}
+  bspc node @parent -F {vertical,horizontal,horizontal,vertical}
+
+# Toggle fullscreen on and off
+super + f
+#  firescreen
+  bspc node -t \~fullscreen
+
+# Toggle floating on and off
+super + r
+  bsp-layout next --layouts monocle,tiled
+# Toggle floating on and off
+
+super + o
+  bspc node focused.tiled -t floating || bspc node focused.floating -t tiled
+
+# Swap window with direction
+super + shift + {h,j,k,l}
+	bspc node -s {west,south,north,east}
+
+# Focus on desktop
+super + {0-9}
+  bspc desktop --focus {0-9}
+
+# Cycle through desktops
+super + {b,n}
+  bspc desktop --focus {prev, next}
+
+# Close all receptacle
+#super + shift + i
+#  for win in `bspc query -N -n .leaf.\!window`; do bspc node $win -k ; done;
+
+# Insert receptacle
+#super + i; {h,j,k,l}
+#  bspc node --presel-dir {west,south,north,east} -i
+
+# Move to rectacle
+#super + r
+#  bspreceptacle
+
+# Balance nodes
+super + e
+  bspc node @/ -B
+
+# Expand a window by moving one of its side outward
+ctrl + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Contract a window by moving one of its side inward
+ctrl + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Move a floating window
+ctrl + alt + {Left,Right,Up,Down}
+  xdo move {-x -20, -x +20, -y -20, -y +20}
+
+super + shift + o
+  ~/.scripts/lemonreload
+
+super + Return
+  alacritty
+
+super + d
+  rofi -show combi
+
+#super + m
+#  cd ~ &&buku_run
+super + c
+  rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+super + i
+#  {bspc config -m focused top_padding 0;xdo hide $(cat /tmp/panid) 0x600001 ,xdo show $(cat /tmp/panid) 0x600001 ;bspc config -m focused top_padding 23}
+  {bspc config -m focused top_padding 0;polybar-msg cmd hide;xdo hide 0x600001, polybar-msg cmd show;bspc config -m focused top_padding 23;xdo show 0x600001}
+#  rofi -show window
+
+super + m
+  alacritty --class bookmarker,bookmarker -e ~/.scripts/mark.sh
+
+super + {minus,equal}
+#i3-volume -n {down,up} 5
+  amixer -D pulse sset Master {5%-,5%+} && notify-send Volume $(~/.gits/candies/volume-pulse/bin/volume-pulse)% -t 1000 -r 6969420
+super + v
+  notify-send Volume $(~/.gits/candies/volume-pulse/bin/volume-pulse)% -t 1000
+
+super + shift + x
+  ~/.config/sxhkd/killandnotify "sxhkd" "Config reloaded" && cd ~ && sxhkd
+
+Print
+  name=$(date +%F_%H_%M_%S) && maim -u ~/Pictures/screenshot/$name.png && xclip -selection clipboard -t image/png ~/Pictures/screenshot/$name.png
+
+Print + shift
+  name=$(date +%F_%H_%M_%S) && maim -u -s ~/Pictures/screenshot/$name.png && xclip -selection clipboard -t image/png ~/Pictures/screenshot/$name.png
+
+Print + control
+  maim -u ~/Pictures/screenshot/$(date +%F_%H_%M_%S).png
+
+Print + Alt
+  maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+
+super + t
+  reswin inc 2
+super + shift + t
+  reswin dec 2
+super + control + t
+  sixnine

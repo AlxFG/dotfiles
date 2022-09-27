@@ -1,0 +1,15 @@
+#!/bin/sh
+# Press C-x to activate to key handler!
+while read file
+do
+        case "$1" in
+        "y")
+                xclip -selection clipboard "$file" -t image/png
+                ;;
+        "l")
+            printf "$file" | xclip -sel c
+            ;;
+        "d")
+            dragon-drop -x $file
+        esac
+done
