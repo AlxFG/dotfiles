@@ -40,6 +40,9 @@ Plug 'szw/vim-dict'
 Plug 'norcalli/nvim-colorizer.lua'
 "Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'udalov/kotlin-vim'
 call plug#end()
 
 "themeing
@@ -82,7 +85,7 @@ function! ToggleNetrw()
         let g:NetrwIsOpen=0
     else
         let g:NetrwIsOpen=1
-        silent Lexplore
+        silent Ex
     endif
 endfunction
 map <leader>e :call ToggleNetrw()<CR>
@@ -95,10 +98,14 @@ map <leader>e :call ToggleNetrw()<CR>
 :tnoremap <Esc> <C-\><C-n>
 :nnoremap <leader>w <C-w>
 nnoremap <leader>t :split<Space>\| res 10 \| terminal<CR>
-command Py :split | res 10 | terminal python %
-command Gcc :split | res 10 | terminal gcc % -o %:r
+command Py :split | res 10 | terminal python3 %
+command Gcc :split | res 10 | terminal gcc -static % -o %:r
 command Rc :split | res 10 | terminal ./%:r
-command GCC :split | res 10 | terminal gcc % -o %:r && ./%:r
+command GCC :split | res 10 | terminal gcc -static % -o %:r && ./%:r
+command Kt :split | res 10 | terminal kotlinc-jvm % -d %:r.jar
+command KT :split | res 10 | terminal kotlinc-jvm % -d %:r.jar && kotlin %:r.jar
+
+command Kts :split | res 10 | terminal kotlinc-jvm -script %
 " Compile and open output
 map <leader>g :w! \| !pandoc --wrap=preserve -s % -o %:r.pdf<CR>
 map <leader>o :!zathura %:r.pdf &disown && exit<CR>
@@ -113,3 +120,15 @@ require('lualine').setup{
 END
 "colour
 lua require'colorizer'.setup()
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" Using Lua functions
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>

@@ -1,0 +1,17 @@
+xrdb -load ~/.config/X11/xresources
+dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+xset dpms 1500 1500 1500
+xset s 1500
+mpd&
+udiskie&
+dunst&
+nm-applet --no-agent&
+keepassxc&
+steam -silent&
+clipit -d&
+greenclip daemon&
+feh --bg-fill ~/Pictures/Wallpaper/ryougi_saber.jpg
+dxhd&
+unclutter --timeout 20&
+~/.gits/dwm-builds/dwm/time.sh&
+exec ~/.gits/dwm-builds/dwm/dwm

@@ -1,0 +1,9 @@
+xrdb -load ~/.config/X11/xresources
+dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+xset dpms 1500 1500 1500
+xset s 1500
+dxhd&
+#stalonetray -c ~/.config/stalonerc
+unclutter --timeout 20&
+feh --bg-fill ~/Pictures/Fanart/57749465_p0.png
+exec ~/.gits/FrankenWM/frankenwm

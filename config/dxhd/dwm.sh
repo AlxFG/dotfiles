@@ -24,7 +24,7 @@
   alacritty
 
 #super +d
-  rofi -show combi
+  dmenu_run
 
 #super +c
   rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'

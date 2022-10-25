@@ -1,0 +1,23 @@
+xrdb -load ~/.config/X11/xresources
+dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+polkit-dumb-agent&
+xset dpms 1500 1500 1500
+xset s 1500
+mpd&
+syncthing --no-browser&
+udiskie&
+dxhd -c ~/.config/dxhd/dwm.sh&
+dunst&
+nm-applet --no-agent&
+keepassxc&
+steam -silent&
+clipit -d&
+greenclip daemon&
+feh --bg-fill ~/Pictures/Wallpaper/ryougi_saber.jpg
+feh --bg-fill ~/Pictures/Fanart/95770169_p0.jpg
+~/.scripts/update.lua&
+unclutter --timeout 20&
+$TERMINAL -e calc&
+mblocks&
+exec dwm
+
