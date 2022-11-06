@@ -13,7 +13,7 @@
 
 # background <color>         # color can be specified as an HTML hex triplet or
                              # as a name from rgb.txt, note that '#' must be quoted
-background "#1C2995"
+background "#282C34"
 # decorations <decspec>      # set trays window decorations; possible values for
                              # decspec are: all, title, border, none
 decorations none
@@ -33,7 +33,7 @@ fuzzy_edges 0
 
 # geometry <geometry>        # tray's geometry in standard X notation; width and
                              # height are specified in slot_size multiples
-geometry 1x1+1775+2
+geometry 1x1+1760+0
 
 # grow_gravity <gravity>     # one of N, S, E, W, NW, NE, SW, SE; tray will grow
                              # in the direction opposite to one specified by
@@ -93,7 +93,7 @@ scrollbars none
 
 # slot_size <int>            # specifies size of icon slot, defaults to
                              # icon_size NEW in @VERSION_STR@.
-slot_size 20
+slot_size 23
 # skip_taskbar [<bool>]      # hide tray`s window from the taskbar
 skip_taskbar true
 
